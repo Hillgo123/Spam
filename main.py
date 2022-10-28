@@ -1,4 +1,4 @@
-import time
+import time, threading, multiprocessing
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
@@ -8,15 +8,6 @@ options = webdriver.ChromeOptions()
 options.add_argument('--ignore-certificate-errors-spki-list')
 options.add_argument('--ignore-ssl-errors')
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
-
-spam_sites = [
-    'https://www.scientificamerican.com/page/newsletter-sign-up/?origincode=2019_sciam_StayInformed_NewsletterSignUp',
-    'https://www.scientology.org/daily-connect/?subscribe=1',
-    'https://nordace.com/en/',
-    'https://www.kohls.com/homepage/sale_alert_signup.jsp',
-    'https://www.bananarepublic.co.uk/interstitial/UK/BananaRepublic/index.html',
-    'https://www.target.com/',
-]
 
 
 _email = ''
@@ -29,6 +20,10 @@ while email_check == True:
         email_check = False
 
 def spammer():
+    spam_sites = [
+        'https://www.scientificamerican.com/page/newsletter-sign-up/?origincode=2019_sciam_StayInformed_NewsletterSignUp',
+        'https://www.scientology.org/daily-connect/?subscribe=1',        
+    ]
     driver = webdriver.Chrome(service=ChromeService(executable_path=ChromeDriverManager().install()), options=options)
     for url in spam_sites:
         driver.get(url)
@@ -58,6 +53,15 @@ def spammer():
                 print(e)
                 print('Scientology failed')
 
+def thread_2():
+    driver = webdriver.Chrome(service=ChromeService(executable_path=ChromeDriverManager().install()), options=options)
+    spam_sites = [
+        'https://nordace.com/en/',
+        'https://www.kohls.com/homepage/sale_alert_signup.jsp',
+    ]
+
+    for url in spam_sites:
+        driver.get(url)
         if url == 'https://nordace.com/en/':
             try:
                 driver.find_element("xpath", "//input[@name='input_1']").send_keys(_email)
@@ -76,6 +80,20 @@ def spammer():
             except Exception as e:
                 print(e)
                 print('Kohls failed')
+    
+    time.sleep(2)
+    driver.quit()
+
+
+def thread_3():
+    driver = webdriver.Chrome(service=ChromeService(executable_path=ChromeDriverManager().install()), options=options)
+    spam_sites = [
+        'https://www.bananarepublic.co.uk/interstitial/UK/BananaRepublic/index.html',
+        'https://www.target.com/',
+    ]
+
+    for url in spam_sites:
+        driver.get(url)
 
         if url == 'https://www.bananarepublic.co.uk/interstitial/UK/BananaRepublic/index.html':
             try:
@@ -95,11 +113,18 @@ def spammer():
                 print(e)
                 print('Target failed')
 
-    time.sleep(5)
+    time.sleep(2)
     driver.quit()
 
 def main():
-    spammer()
+    t2 = multiprocessing.Process(target=thread_2())
+    t3 = multiprocessing.Process(target=thread_3())
+    t2.start()
+    t3.start()
+
+    t2.join()
+    t3.join()
+    # spammer()
     print('You got spam!')
 
 
