@@ -1,0 +1,21 @@
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+.get_email {
+    position: absolute;
+    top: 50vh;
+    left: 50%;
+    width: 300px;
+    transform: translate(-50%, -50%);
+    margin: 20px;
+}
+
+.get_email {
+
+}
+
+::placeholder {
+    color: red;
+}

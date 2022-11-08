@@ -19,8 +19,6 @@ spam_sites = [
 ]
 
 
-_email = ''
-
 email_check = True
 while email_check == True:
     _email = str(input("What's your email?"))
@@ -28,39 +26,50 @@ while email_check == True:
     if '@' in _email and '.' in _email:
         email_check = False
 
+
 def spammer():
-    driver = webdriver.Chrome(service=ChromeService(executable_path=ChromeDriverManager().install()), options=options)
+    driver = webdriver.Chrome(service=ChromeService(
+        executable_path=ChromeDriverManager().install()), options=options)
     for url in spam_sites:
         driver.get(url)
 
         if url == 'https://www.scientificamerican.com/page/newsletter-sign-up/?origincode=2019_sciam_StayInformed_NewsletterSignUp':
             try:
-                driver.find_element("xpath", "//input[@name='email']").send_keys(_email)
-                driver.find_element("xpath", "//input[@name='emailConfirmation']").send_keys(_email)
+                driver.find_element(
+                    "xpath", "//input[@name='email']").send_keys(_email)
+                driver.find_element(
+                    "xpath", "//input[@name='emailConfirmation']").send_keys(_email)
                 driver.execute_script("window.scrollTo(0, 1100)")
-                driver.find_element("xpath", "//input[@name='List_OptIn_Internal']").click()
-                driver.find_element("xpath", "//input[@name='List_OptIn_External']").click()
-                driver.find_element("xpath", "//input[@name='List_EnglishAcceptedTC']").click()
-                driver.find_element("xpath", "//button[@id='submitCreateAccount']").click()
+                driver.find_element(
+                    "xpath", "//input[@name='List_OptIn_Internal']").click()
+                driver.find_element(
+                    "xpath", "//input[@name='List_OptIn_External']").click()
+                driver.find_element(
+                    "xpath", "//input[@name='List_EnglishAcceptedTC']").click()
+                driver.find_element(
+                    "xpath", "//button[@id='submitCreateAccount']").click()
 
-            
-            except Exception as e: 
+            except Exception as e:
                 print(e)
                 print('Scientific american failed')
-        
+
         if url == 'https://www.scientology.org/daily-connect/?subscribe=1':
             try:
-                driver.find_element("xpath", "//input[@name='firstName']").send_keys('name')
-                driver.find_element("xpath", "//input[@name='email']").send_keys(_email)
-                driver.find_element("xpath", "//button[@type='submit']").click()
-                
+                driver.find_element(
+                    "xpath", "//input[@name='firstName']").send_keys('name')
+                driver.find_element(
+                    "xpath", "//input[@name='email']").send_keys(_email)
+                driver.find_element(
+                    "xpath", "//button[@type='submit']").click()
+
             except Exception as e:
                 print(e)
                 print('Scientology failed')
 
         if url == 'https://nordace.com/en/':
             try:
-                driver.find_element("xpath", "//input[@name='input_1']").send_keys(_email)
+                driver.find_element(
+                    "xpath", "//input[@name='input_1']").send_keys(_email)
                 driver.find_element("xpath", "//input[@type='submit']").click()
 
             except Exception as e:
@@ -69,9 +78,12 @@ def spammer():
 
         if url == 'https://www.kohls.com/homepage/sale_alert_signup.jsp':
             try:
-                driver.find_element("xpath", "//input[@name='enterEmail']").send_keys(_email)    
-                driver.find_element("xpath", "//input[@name='emailConfirm']").send_keys(_email)    
-                driver.find_element("xpath", "//button[@class='addtolist']").click()
+                driver.find_element(
+                    "xpath", "//input[@name='enterEmail']").send_keys(_email)
+                driver.find_element(
+                    "xpath", "//input[@name='emailConfirm']").send_keys(_email)
+                driver.find_element(
+                    "xpath", "//button[@class='addtolist']").click()
 
             except Exception as e:
                 print(e)
@@ -79,8 +91,10 @@ def spammer():
 
         if url == 'https://www.bananarepublic.co.uk/interstitial/UK/BananaRepublic/index.html':
             try:
-                driver.find_element("xpath", "//input[@name='email']").send_keys(_email)    
-                driver.find_element("xpath", "//input[@class='sds_absolute']").click()
+                driver.find_element(
+                    "xpath", "//input[@name='email']").send_keys(_email)
+                driver.find_element(
+                    "xpath", "//input[@class='sds_absolute']").click()
 
             except Exception as e:
                 print(e)
@@ -88,8 +102,10 @@ def spammer():
 
         if url == 'https://www.target.com/':
             try:
-                driver.find_element("xpath", "//input[@name='email-address']").send_keys(_email)    
-                driver.find_element("xpath", "//button[@id='submit-button']").click()
+                driver.find_element(
+                    "xpath", "//input[@name='email-address']").send_keys(_email)
+                driver.find_element(
+                    "xpath", "//button[@id='submit-button']").click()
 
             except Exception as e:
                 print(e)
@@ -97,10 +113,11 @@ def spammer():
 
     time.sleep(5)
     driver.quit()
+    print('You got spam!')
+
 
 def main():
     spammer()
-    print('You got spam!')
 
 
 if __name__ == '__main__':
